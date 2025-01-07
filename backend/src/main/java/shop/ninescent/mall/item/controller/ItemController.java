@@ -32,13 +32,13 @@ public class ItemController {
     }
 
     @PutMapping("/{id}")
-    public Item updateItem(@PathVariable int id, @RequestBody Item item) {
+    public Item updateItem(@PathVariable("id") int id, @RequestBody Item item) {
         item.setItemId(id);
         return itemService.saveItem(item);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteItem(@PathVariable int id) {
+    public void deleteItem(@PathVariable("id") int id) {
         itemService.deleteItem(id);
     }
 }
