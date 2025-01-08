@@ -41,18 +41,16 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/public/**").permitAll() // 공개 API
-                        .requestMatchers("/api/products/**").permitAll() // 상품 관련 API
-                        .requestMatchers("/api/auth/**").permitAll() // 인증 관련 API
-                        .requestMatchers("/api/user/**").permitAll() // 기본적으로 인증 필요 없음
-                        .requestMatchers("/api/items/**").permitAll() // 기본적으로 인증 필요 없음
-                        .requestMatchers("/api/cart/**").permitAll() // 삭제예정
-                        .requestMatchers("/api/order/**").permitAll() // 삭제예정
-                        .requestMatchers("/api/address/**").permitAll() // 삭제예정
-                        .requestMatchers("/api/categories/**").permitAll()
+                        // 특정 경로에 대해 인증 및 권한 설정
+
                         .requestMatchers("/api/user/delete-member", "/api/user/{username}/**").authenticated() // 회원탈퇴, 회원정보 수정 인증 필요
                         .requestMatchers("/api/admin/**").hasRole("ADMIN") // 관리자 권한 필요
-                        .anyRequest().authenticated() // 그 외 요청은 인증 필요
+
+                        // 그 외 /api/** 아래 모든 경로를 허용
+                        .requestMatchers("/api/**").permitAll()
+
+                        // 나머지 요청은 인증 필요
+                        .anyRequest().authenticated()
                 )
                 .build();
     }
