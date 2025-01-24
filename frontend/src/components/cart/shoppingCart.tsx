@@ -16,12 +16,15 @@ interface Props {
     }[];
 }
 
-export default function ShoppingCart({ products }: Props) {
-    let subtotal = 0;
-    products.map((product) => (subtotal += product.price));
+export default function ShoppingCart({ products = [] }: Props) {
     if (!products || products.length === 0) {
         return <div>장바구니가 비어 있습니다.</div>;
     }
+
+    let subtotal = 0;
+    products.forEach((product) => {
+        subtotal += product.price || 0; // 가격이 없는 경우 0으로 처리
+    });
 
     return (
         <>
