@@ -3,42 +3,69 @@ import Layout from '../layouts/Layout.astro';
 import data from '../../public/data.json';
 import '../../assets/scss/astro-ecommerce.scss';
 import Navbar from '../components/navbar';
-import UpperNavbar from '../components/store/upperNavbar';
 import CardProduct from '../components/products/cardProduct';
-import ShoppingCart from '../components/cart/shoppingCart';
+import ShoppingCart1 from '../components/cart/shoppingCart';
 import StoreDoubleColumn from '../components/store/storeDoubleColumn';
 
-let cartItems = [];
-data.shoppingCart.map(id => 
-  data.products.filter(x => x.id == id).map(x => cartItems.push(x))
-)
+interface ShoppingCartItem {
+  id: string;
+  thumb_src: string;
+  thumb_alt: string;
+  color: string;
+  title: string;
+  price: number;
+  size: string;
+  stock: boolean;
+  subtotal: number;
+  shipping: number;
+  tax: number;
+}
+
+let cartItems: ShoppingCartItem[] = data.shoppingCart.reduce((items, id) => {
+  const product = data.products.find(product => product.id === id);
+  if (product) {
+    items.push({
+      ...product,
+      size: 'N/A', // 기본값 설정
+      stock: true,
+      subtotal: product.price,
+      shipping: 5,
+      tax: product.price * 0.1,
+    });
+  }
+  return items;
+}, [] as ShoppingCartItem[]);
+
+
+
 ---
 
 <Layout title="Shopping Cart">
 	<main>
     <Navbar />
 
-    <ShoppingCart products = {cartItems}/>
+    <ShoppingCart1 products={cartItems} />
     
     <div class="container mt-5">
       <div class="row">
         <h5 class="mb-4">You may also like...</h5>
-        {data.products.map(product => 
+        {data.products.map(product => (
           <div class="col-md-6 col-lg-3">
             <CardProduct 
-              thumb_src = {product.thumb_src}
-              thumb_alt = {product.thumb_alt}
-              color = {product.color}
-              title = {product.title}
-              price = {product.price}
-              position = "left"
+              thumb_src={product.thumb_src}
+              thumb_alt={product.thumb_alt}
+              color={product.color}
+              title={product.title}
+              price={product.price}
+              position="left"
+              description={product.description ?? ''}
+              colors={product.colors ?? []}
             />
           </div>
-        )}        
+        ))}
       </div>
       <hr class="dark horizontal my-5" />
       <StoreDoubleColumn />
     </div>
   </main>
-
 </Layout>
