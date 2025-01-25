@@ -51,6 +51,15 @@ public class UserServiceImpl implements UserService {
         return user.toVO();
     }
 
+    // 회원 정보 조회
+    @Override
+    public UserVO getInfo(Long userNo) {
+        User user = userRepository.findByUserNo(userNo)
+                .orElseThrow(() -> new NoSuchElementException("해당 사용자를 찾을 수 없습니다."));
+        return user.toVO();
+    }
+
+
     @Transactional
     @Override
     public UserVO join(UserJoinRequestDTO dto) {
@@ -69,8 +78,8 @@ public class UserServiceImpl implements UserService {
         User user = dto.toEntity(passwordEncoder.encode(dto.getPassword()));
 
         // Role 설정
-        user.setRole(User.Role.valueOf("ROLE_USER")); // 기본 사용자 권한 설정
-
+//        user.setRole(User.Role.valueOf("ROLE_USER")); // 기본 사용자 권한 설정
+        user.setRole(User.Role.ROLE_USER); // 기본 사용자 권한 설정
         // 사용자 정보 저장
         userRepository.save(user);
 

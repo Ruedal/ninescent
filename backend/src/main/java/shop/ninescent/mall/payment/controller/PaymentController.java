@@ -28,5 +28,4 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 }
