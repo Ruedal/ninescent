@@ -1,21 +1,19 @@
 package shop.ninescent.mall.payment.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 @Entity
-@Table(name = "payment")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paymentId;
+    private Long paymentNo;
+
+    @Column(nullable = false)
+    private String paymentId;
 
     @Column(nullable = false)
     private Long orderId;
@@ -23,11 +21,15 @@ public class Payment {
     @Column(nullable = false)
     private Long userNo;
 
+    @Column(nullable = false)
     private String paymentStatus;
 
+    @Column(nullable = false)
     private String paymentMethod;
 
-    private LocalDateTime paymentDate;
+    @Column(nullable = false)
+    private String paymentDate;
 
+    @Column(nullable = false)
     private Long totalAmount;
 }
